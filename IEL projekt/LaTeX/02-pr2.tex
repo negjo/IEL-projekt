@@ -1,0 +1,115 @@
+\section{Příklad 2}
+% Jako parametr zadejte skupinu (A-H)
+\druhyZadani{D}
+
+ Nejprve odstraníme z obvodu rezistor $R_3$ a zdroj napětí $U$ nahradíme za zkrat. Dále upravujeme obvod do doby, než vypočítáme $R_i$.
+
+\begin{circuitikz}
+\draw
+    (0,0)
+    to (0,2)
+    to[short, -*] (1,2)
+    to (1,3)
+    to[resistor, l = $R_1$ , -*] (3,3)
+    to[short, -o] (3,2.5)
+    (3,3)
+    to[resistor, l = $R_4$] (5,3)
+    to[resistor, l = $R_5$, -*] (5,1)
+    (1,2)
+    to (1,1)
+    to[resistor, l = $R_2$, -*] (3,1)
+    to[short, -o] (3,1.5)
+    (3,1)
+    to[resistor, l = $R_6$] (5,1)
+    to (5,0)
+    to (0,0);
+\end{circuitikz}
+\\
+\begin{circuitikz}
+\draw
+    (0,0)
+    to[short, -*] (0,1)
+    to (0,2)
+    to[resistor, l = $R_1$, -*] (2,2)
+    to[short, -o] (2,1.5)
+    (2,2)
+    to[resistor, l = $R_4{}_5$] (4,2)
+    to[short, -*] (4,1)
+    to (4,0)
+    to[resistor, l = $R_6$, -*] (2,0)
+    to[short, -o] (2,0.5)
+    (2,0)
+    to[resistor, l = $R_2$] (0,0)
+    (0,1)
+    to (4,1);
+\end{circuitikz}
+
+\[ R_4{}_5 = R_4 + R_5 = 200 + 550 = 750 \ \Omega \]
+
+\begin{circuitikz}
+\draw
+    (0,0)
+    to[resistor, l = $R_2$, -*] (0,2)
+    to[resistor, l = $R_1$] (0,4)
+    to (1,4)
+    to[short, *-o] (1,4.5)
+    (1,4)
+    to (2,4)
+    to[resistor, l = $R_4{}_5$, -*] (2,2)
+    to[resistor, l = $R_6$] (2,0)
+    to (1,0)
+    to[short, *-o] (1,-0.5)
+    (1,0)
+    to (0,0)
+    (0,2)
+    to (2,2);
+\end{circuitikz}
+
+\begin{circuitikz}
+\draw
+    (0,0)
+    to[resistor, l = $R_2{}_6$, o-] (0,2)
+    to[resistor, l = $R_1{}_4{}_5$, -o] (0,4);
+\end{circuitikz}
+
+\[ R_1{}_4{}_5 = \frac {R_1 * R_4{}_5} {R_1 + R_4{}_5} = \frac {200 * 750} {200 + 750} = 157.8947 \ \Omega \]
+\[ R_2{}_6 = \frac {R_2 * R_6} {R_2 + R_6} = \frac {200 * 400} {200 + 400} = 133.3333 \ \Omega \]
+
+\begin{circuitikz}
+\draw
+    (0,0)
+    to[resistor, l = $R_i$, o-o] (0,2);
+\end{circuitikz}
+
+\[ R_i = R_1{}_4{}_5 + R_2{}_6 = 157.8947 + 133.3333 = 291.228 \ \Omega \]
+
+Nyní překreslíme obvod bez $R_3$ a určíme napětí mezi body $A$ a $B$
+
+\begin{circuitikz}
+\draw
+    (0,0)
+    to[dcvsource, v^<=$U$] (0,2)
+    to[short, -*] (1,2)
+    to (1,3)
+    to[resistor, l = $R_1$ , -*] (3,3)
+    to[short, -*, l = $A$] (3,2.5)
+    (3,3)
+    to[resistor, l = $R_4{}_5$] (5,3)
+    to (5,1)
+    (1,2)
+    to (1,1)
+    to[resistor, l = $R_2$, -*] (3,1)
+    to[short, -*, l = $B$] (3,1.5)
+    (3,1)
+    to[resistor, l = $R_6$] (5,1)
+    to (5,0)
+    to (0,0);
+\end{circuitikz}
+
+\begin{align*}
+    & U_R{}_1 = U * \frac {R_1} {R_1 + R_4{}_5} = \frac {200} {200+750} = 31.5789 \ V \\\\
+    & U_R{}_2 = U * \frac {R_2} {R_2 + R_6} = \frac {200} {200+400} = 50 \ V \\\\
+    & U_I = U_R{}_2 - U_R{}_1 = 50 - 31.5789 = 18.4211 \ V \\\\
+    & I_R{}_3 = \frac {U_I} {R_i + R_3} = \frac {18.4211} {291.228 + 660} = 0.01937 \ A \\\\
+    & U_R{}_3 = R_3 * I_R{}_3 = 660 * 0.01937 = 12.7842 \ V \\\\
+\end{align*}

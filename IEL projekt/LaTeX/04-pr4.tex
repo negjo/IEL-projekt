@@ -1,0 +1,149 @@
+f\section{Příklad 4}
+% Jako parametr zadejte skupinu (A-H)
+\ctvrtyZadani{D}
+
+
+Určíme si směry proudů ve smyčkách
+
+\begin{circuitikz}
+\draw
+    (0,0)
+    to (0,2)
+    to[resistor, l = $R_1$, *-] (0,4)
+    to[sV, v^>=$U_1$] (6,4)
+    to (6,2)
+    to[open, i_>= $I_{L2}$] (5,2)
+    (3,2)
+    to [cute inductor, l = $L_2$, v_<=$U_{L2}$, *-*] (6,2)
+    to[sV, v^>=$U_2$] (6,0)
+    to[capacitor, l = $C_2$, -*] (3,0)
+    to[cute inductor, l = $L_1$] (0,0)
+    (0,2)
+    to[capacitor, l = $C_1$] (3,2)
+    to[resistor, l = $R_2$] (3,0)
+    (3,3) node[circulator, rotate = 180, scale = 0.5] {}
+    (2.5,3) node{$i_A$}
+    (1.5,1) node[circulator, rotate = 180, scale = 0.5]{}
+    (1,1) node{$i_B$}
+    (4.5,0.75) node[circulator, rotate = 180, scale = 0.5]{}
+    (4,0.75) node{$i_C$};
+\end{circuitikz}
+
+Sestavíme si rovnice proudů ve všech smyčkách
+\begin{align*}
+    & i_A: R_1 * I_A + Z_{C1} * (I_A - I_B) + Z_{L2} * (I_A - I_C) + U_1 \\
+    & i_B: Z_{C1} * (I_B - I_A) + Z_{L1} * I_B + R_2 * (I_B - I_C) \\
+    & i_C: R_2 * (I_C - I_B) + U_{C2} * I_C + Z_{L2} * (I_C - I_A) + U_2
+\end{align*}
+
+Převedeme rovnice do matic
+\begin{equation*}
+    \begin{pmatrix}
+    R_1 + Z_{C1} + Z_{L2} & -Z_{C1} & -Z_{L2} \\
+    -Z_{C1} & Z_{C1} + Z_{L1} + R_1 & - R_2 \\
+    -Z_{L2} & -R_2 & R_2 + Z_{C2} + Z_{L2}
+    \end{pmatrix}
+    *
+    \begin{pmatrix}
+    I_A \\
+    I_B \\
+    I_C
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    -U_1 \\
+    0 \\
+    -U_2
+    \end{pmatrix}
+\end{equation*}
+
+Vypočítáme hodnoty impedancí
+\begin{align*}
+    & \omega = 2 * \pi * f = 2 * \pi * 85 = 534.07075 \\
+    & Z_{C1} = -\frac {1} {\omega * C_1}j = -\frac {1} {534.07075111 * 0.00021}j = -8.91624j\\
+    & Z_{C2} = -\frac {1} {\omega * C_2}j = -\frac {1} {534.07075111 * 0.000075}j = -24.96548j\\
+    & Z_{L1} = \omega * L_1 * j = 534.07075 * 0.18 = 96.13274j \\
+    & Z_{L2} = \omega * L_2 * j = 534.07075 * 0.09 = 48.06637j
+\end{align*}
+
+Dosadíme hodnoty
+\begin{equation*}
+    \begin{pmatrix}
+        13 - 8.91624j + 48.06637j & 8.91624j & -48.06637j \\
+        8.91624j & -8.91624j + 96.13274j + 13 & -15 \\
+        -48.06637j & -15 & 15 -24.96548j + 48.06637j
+    \end{pmatrix}
+    *
+    \begin{pmatrix}
+        I_A \\
+        I_B \\
+        I_C
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        -45 \\
+        0 \\
+        -50
+    \end{pmatrix}
+\end{equation*}
+
+Upravíme hodnoty
+\begin{equation*}
+    \begin{pmatrix}
+        13 + 39.15012j & 8.91624j & -48.06637j \\
+        8.91624j & 13 + 87.21649j & -15 \\
+        -48.06637j & -15 & 15 + 23.10089j
+    \end{pmatrix}
+    *
+    \begin{pmatrix}
+        I_A \\
+        I_B \\
+        I_C
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        -45 \\
+        0 \\
+        -50
+    \end{pmatrix}
+\end{equation*}
+
+
+Pomocí Sarussova pravidal vypočítáme determinanty matic
+\begin{align*}
+    \Delta = 
+    &\begin{vmatrix}
+        13 + 39.15012j & 8.91624j & -48.06637j \\
+        8.91624j & 13 + 87.21649j & -15 \\
+        -48.06637j & -15 & 15 + 23.10089j
+    \end{vmatrix}
+    = -71187.16833 + 144197.30794j \\
+    \Delta_A = 
+    &\begin{vmatrix}
+        -45 & 8.91624j & -48.06637j \\
+        0 & 13 + 87.21649j & -15 \\
+        -50 & -15 & 15 + 23.10089j
+    \end{vmatrix}
+    =  301624.02492 - 96941.10773j \\
+    \Delta_C = 
+    &\begin{vmatrix}
+        13 + 39.15012j & 8.91624j & -45 \\
+        8.91624j & 13 + 87.21649j & 0 \\
+        -48.06637j & -15 & -50
+    \end{vmatrix}
+    =  301624.02492 - 96941.10773j
+\end{align*}
+
+Pomocí Cramerova pravidla vypočítáme proudy ve smyčkách A a C
+\[ I_A = \frac {\Delta_A} {\Delta} = \frac {301624.02492 - 96941.10773j} {-71187.168332 + 144197.30794j} = -1.37083 - 1.41499j \ A \]
+\[ I_C = \frac {\Delta_C} {\Delta} = \frac {346949.95334 - 104238.66133j} {-71187.16833 + 144197.30794j} = -1.53629 - 1.64764j \ A \]
+
+Nyní už jen pomocí vzorečků dopočítáme požadované hodnoty
+\begin{align*}
+    & I_{L2} = I_A - I_C = -1.37083 - 1.41499j - (-1.53629 - 1.64764j) = 0.165465 + 0.23265j \ A \\[6pt]
+    & U_{L2} = I_{L2} * Z_{L2} = (0.165461 + 0.232648j) * 48.06637j = -11.18254 + 7.95313j \ V \\[6pt]
+    & |U_{L2}| = \sqrt {Re(U_{L2})^2 + Im(U_{L2})^2} = \sqrt {-11.18254^2 + 7.95313^2} = 13.7223 \ V \\[6pt]
+    & \phi_{L2} = arctan\frac {Im(U_{L2})} {Re(U_{L2})} = arctan\frac {7.95313} {-11.18254} + \pi = 2.52338\ rad
+\end{align*}
+
+

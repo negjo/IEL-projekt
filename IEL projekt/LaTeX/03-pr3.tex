@@ -1,0 +1,174 @@
+\section{Příklad 3}
+% Jako parametr zadejte skupinu (A-H)
+\tretiZadani{B}
+
+
+Převedeme si zdroj napětí $U$ na zdroj proudu $I_3$ a všechny odpory na vodivosti
+
+\begin{circuitikz}
+\draw
+    (0,0)
+    to[ioosource, v^>=$I_3$] (0,3)
+    to(1,3)
+    to[resistor, l = $G_1$, *-*] (1,0)
+    to (0,0)
+    (1,3)
+    to (2,3)
+    node[label={[font=\footnotesize]above:$A$}] {}
+    to[resistor, l = $G_3$, *-*] (5,3)
+    node[label={[font=\footnotesize]above:$B$}] {}
+    to (6,3)
+    to[ioosource, v^<=$I_1$] (6,0)
+    to(5,0)
+    node[label={[font=\footnotesize]290:$C$}] {}
+    to[resistor, l = $G_5$] (5,3)
+    (5,0)
+    to[resistor, l = $G_4$, *-*] (2,0)
+    to[resistor, l_ = $G_2$] (2,3)
+    (2,0)
+    to(2,-1.5)
+    to[ioosource, v_>=$I_2$] (5,-1.5)
+    to (5,0)
+    (1,0)
+    to (2,0);
+\end{circuitikz}
+
+\[ I_3 = \frac {U} {R_1} = \frac {150} {49} \]
+\[ G_1 = \frac {1} {R_1} = \frac {1} {49} \]
+\[ G_2 = \frac {1} {R_2} = \frac {1} {45} \]
+\[ G_3 = \frac {1} {R_3} = \frac {1} {61} \]
+\[ G_4 = \frac {1} {R_4} = \frac {1} {34}\]
+\[ G_5 = \frac {1} {R_5} = \frac {1} {34}\]
+\\
+Sestavíme rovnice proudů na jednotlivých uzlech
+
+\begin{align*}
+    & A: I_3 - G_2 * U_A - G_1 * U_A - G_3 * (U_A - U_B) \\
+    & B: I_1 + G_3 * (U_A - U_B) - G_5 * (U_B - U_C) \\
+    & C: I_2 + G_5 * (U_B - U_C) - G_4 * U_C - I_1 \\
+\end{align*}
+
+Upravíme rovnice
+
+\begin{align*}
+    & U_A * (-G_2 - G_1 - G_3) + U_B * G_3 = -I_3 \\
+    & U_A * G_3 + U_B * (-G_3 - G_5) + U_C * G_5 = -I_1 \\
+    & U_B * G_5 + U_C * (-G_5 - G_4) = I_1 - I_2 \\ 
+\end{align*}
+
+Převedeme rovnice do matic
+\begin{equation*}
+    \begin{pmatrix}
+        -G_2 - G_1 - G_3 & G_3 & 0 \\
+        G_3 & -G_3 - G_5 & G_5 \\
+        0 & G_5 & -G_5 - G_4
+    \end{pmatrix}
+    *
+    \begin{pmatrix}
+        U_A \\
+        U_B \\
+        U_C
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        -I_3 \\
+        -I_1 \\
+        I_1 - I_2
+    \end{pmatrix}
+\end{equation*}
+
+Dosadíme do matic
+\begin{equation*}
+    \begin{pmatrix}
+        -\frac {1} {45} -\frac {1} {49} - \frac {1} {61} & \frac {1} {61} & 0 \\[6pt]
+        \frac {1} {61} & -\frac {1} {61} - \frac {1} {34} & \frac {1} {34} \\[6pt]
+        0 & \frac {1} {34} & -\frac {1} {34} - \frac {1} {34}
+    \end{pmatrix}
+    *
+    \begin{pmatrix}
+    U_A \\[6pt]
+    U_B \\[6pt]
+    U_C
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    -\frac {150} {49} \\[6pt]
+    -0.7 \\[6pt]
+    0.7 - 0.8
+    \end{pmatrix}
+\end{equation*}
+
+Upravíme matice
+\begin{equation*}
+    \begin{pmatrix}
+        -\frac {7939} {134505} & \frac {1} {61} & 0 \\[6pt]
+        \frac {1} {61} & -\frac {95} {2074} & \frac {1} {34} \\[6pt]
+        0 & \frac {1} {34} & -\frac {1} {17}
+    \end{pmatrix}
+    *
+    \begin{pmatrix}
+    U_A \\[6pt]
+    U_B \\[6pt]
+    U_C
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    -\frac {150} {49} \\[6pt]
+    -0.7 \\[6pt]
+    -0.1
+    \end{pmatrix}
+\end{equation*}
+
+Nyní vypočítáme determinanty matic pomocí Sarussova pravidla
+\begin{multline*}
+    \Delta =
+    \begin{vmatrix}
+        -\frac {7939} {134505}  & \frac {1} {61}        & 0 \\[6pt]
+        \frac {1} {61}          & -\frac {95} {2074}    & \frac {1} {34} \\[6pt]
+        0                       & \frac {1} {34}        & -\frac {1} {17}
+    \end{vmatrix}
+    = (-\frac {7939} {134505}) * (-\frac {95} {2074}) * (-\frac {1} {17}) 
+    + \frac {1} {61} * \frac {1} {34} * 0
+    + 0 * \frac {1} {61} * \frac {1} {34} \\
+    - 0 * (-\frac {95} {2074}) * 0
+    - (-\frac {7939} {134505}) * \frac {1} {34} * \frac {1} {34}
+    - \frac {1} {61} * \frac {1} {61} * (-\frac {1} {17}) \\
+    = -\frac {8873} {55792674} + \frac {467} {9146340} + \frac {1} {63257}
+    = \frac {281} {3048780}
+\end{multline*}
+
+\begin{multline*}
+    \Delta_A =
+    \begin{vmatrix}
+        -\frac {150} {49}       & \frac {1} {61}       & 0 \\[6pt]
+        -0.7                    & -\frac {95} {2074}    & \frac {1} {34} \\[6pt]
+        -0.1                    & \frac {1} {34}        & -\frac {1} {17}
+    \end{vmatrix}
+    = (-\frac {150} {49}) * (-\frac {95} {2074}) * (-\frac {1} {17}) 
+    + (-0.7) * \frac {1} {34} * 0
+    + (-0.1) * \frac {1} {61} * \frac {1} {34} \\
+    - 0 * (-\frac {95} {2074}) * (-0.1)
+    - (-\frac {150} {49}) * \frac {1} {34} * \frac {1} {34}
+    - (-0.7) * \frac {1} {61} * (-\frac {1} {17}) \\
+    = -\frac {7125} {863821} - \frac {1} {20740} + \frac {75} {28322} - \frac {7} {10370}
+    = \frac {21849} {3455284}
+\end{multline*}
+
+Použitím Cramerova pravidla vypočítáme $U_A$ = $U_R{}_2$
+\[ U_R{}_2 = U_A = \frac {\Delta_A} {\Delta} = \frac {\frac {21849} {3455284}} {\frac {281} {3048780}} = \frac {327735} {4777} = 68.6069 \ V \]
+\[ I_R{}_2 = \frac {U_R{}_2} {R_2} = \frac {68.6069} {45} = 1.5246 \ A \]
+
+
+%I_3 = \frac {U} {R_1} = \frac {150} {49} = 3.0612
+
+%G_1 = \frac {1} {R_1} = \frac {1} {49} = 0.0204 
+%G_2 = \frac {1} {R_2} = \frac {1} {45} = 0.0222 
+%G_3 = \frac {1} {R_3} = \frac {1} {61} = 0.0164 
+%G_4 = \frac {1} {R_4} = \frac {1} {34} = 0.0294 
+%G_5 = \frac {1} {R_5} = \frac {1} {34} = 0.0294
+
+
+
+%        -0.0262  & -0.0164  & 0
+%        -0.0164  & -0.013   & 0.0294
+%        0        & 0.0294   & -0.013
